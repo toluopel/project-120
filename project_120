@@ -1,0 +1,162 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "project 120",
+      "provenance": [],
+      "authorship_tag": "ABX9TyPFMKepSq9stlqQp1u1EX48",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/toluopel/project-120/blob/main/project_120\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "NdPF_5IvuEMz",
+        "outputId": "5598b19d-8d5f-42a1-fffa-1c520d9df74a"
+      },
+      "source": [
+        "import pandas as pd\n",
+        "\n",
+        "df = pd.read_csv(\"income.csv\")\n",
+        "print(df.head())\n",
+        "print(df.describe())"
+      ],
+      "execution_count": 2,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "   age          workclass  ...  native-country  income\n",
+            "0   39          State-gov  ...   United-States   <=50K\n",
+            "1   50   Self-emp-not-inc  ...   United-States   <=50K\n",
+            "2   38            Private  ...   United-States   <=50K\n",
+            "3   53            Private  ...   United-States   <=50K\n",
+            "4   28            Private  ...            Cuba   <=50K\n",
+            "\n",
+            "[5 rows x 14 columns]\n",
+            "                age  education-num  capital-gain  capital-loss  hours-per-week\n",
+            "count  45222.000000   45222.000000  45222.000000  45222.000000    45222.000000\n",
+            "mean      38.547941      10.118460   1101.430344     88.595418       40.938017\n",
+            "std       13.217870       2.552881   7506.430084    404.956092       12.007508\n",
+            "min       17.000000       1.000000      0.000000      0.000000        1.000000\n",
+            "25%       28.000000       9.000000      0.000000      0.000000       40.000000\n",
+            "50%       37.000000      10.000000      0.000000      0.000000       40.000000\n",
+            "75%       47.000000      13.000000      0.000000      0.000000       45.000000\n",
+            "max       90.000000      16.000000  99999.000000   4356.000000       99.000000\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "xhyKuMk1ui7h",
+        "outputId": "7f808464-f8c7-4972-b424-58651b8f7999"
+      },
+      "source": [
+        "from sklearn.model_selection import train_test_split\n",
+        "\n",
+        "X = df[[\"age\", \"hours-per-week\",\"education-num\",\"capital-gain\",\"capital-loss\"]]\n",
+        "y = df[\"income\"]\n",
+        "\n",
+        "x_train_1,x_test_1,y_train_1,y_test_1 = train_test_split(X,y,test_size = 0.25, random_state = 42)\n",
+        "\n",
+        "from sklearn.naive_bayes import GaussianNB\n",
+        "from sklearn.metrics import accuracy_score\n",
+        "from sklearn.preprocessing import StandardScaler\n",
+        "\n",
+        "sc = StandardScaler()\n",
+        "\n",
+        "x_train_1 = sc.fit_transform(x_train_1)\n",
+        "x_test_1 = sc.fit_transform(x_test_1)\n",
+        "\n",
+        "model_1 = GaussianNB()\n",
+        "model_1.fit(x_train_1,y_train_1)\n",
+        "\n",
+        "y_pred_1 = model_1.predict(x_test_1)\n",
+        "accuracy = accuracy_score(y_test_1,y_pred_1)\n",
+        "print(accuracy)"
+      ],
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "0.7896692021935255\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "F92-692MvuF4",
+        "outputId": "c7923606-6e86-4de6-e1d6-c19a02edfac0"
+      },
+      "source": [
+        "from sklearn.model_selection import train_test_split\n",
+        "\n",
+        "X = df[[\"age\", \"hours-per-week\",\"education-num\",\"capital-gain\",\"capital-loss\"]]\n",
+        "y = df[\"income\"]\n",
+        "\n",
+        "x_train_2,x_test_2,y_train_2,y_test_2 = train_test_split(X,y,test_size = 0.25, random_state = 42)\n",
+        "\n",
+        "from sklearn.linear_model import LogisticRegression\n",
+        "from sklearn.metrics import accuracy_score\n",
+        "from sklearn.preprocessing import StandardScaler\n",
+        "\n",
+        "sc = StandardScaler()\n",
+        "\n",
+        "x_train_2 = sc.fit_transform(x_train_2)\n",
+        "x_test_2 = sc.fit_transform(x_test_2)\n",
+        "\n",
+        "model_2 = LogisticRegression(random_state = 0)\n",
+        "model_2.fit(x_train_2,y_train_2)\n",
+        "\n",
+        "y_pred_2 = model_2.predict(x_test_2)\n",
+        "accuracy = accuracy_score(y_test_2,y_pred_2)\n",
+        "print(accuracy)"
+      ],
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "0.8116929064213692\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
